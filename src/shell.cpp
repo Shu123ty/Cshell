@@ -5,10 +5,18 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdlib>
+#include <unistd.h>
 
 using namespace std;
 
 void shell_loop(void){
+    const char* home = getenv("HOME");
+
+    if (home != nullptr)
+    {
+    chdir(home);
+    }
 
     int running = 1;
    
