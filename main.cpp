@@ -93,6 +93,17 @@ void execute_command(vector<string>& args){
     }
 }
 
+void execute_help(void){
+    
+    cout << "Cshell - Built-in Commands\n";
+    cout << "  cd [directory]  Change the working directory\n";
+    cout << "  help            Display this help message\n";
+    cout << "  exit            Exit the shell\n";
+    cout << "\n";
+    cout << "Other commands are searched for in PATH.\n";
+
+}
+
 void shell_loop(void){
 
     int running = 1;
@@ -118,7 +129,10 @@ void shell_loop(void){
         else{
             if (args[0] == "cd"){
                 execute_cd(args);
-            }else{
+            }else if (args[0] == "help"){
+                execute_help();
+            }
+            else{
                 execute_command(args);
             }
         }
