@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <cstdio>
+#include <cstdlib>
 #include <cerrno>
 
 using namespace std;
@@ -36,9 +37,25 @@ vector<string> parse_input(const string& input){
     return args; // returns the vector
 }
 
-void execute_command(vector<string>& args){
-    /* args->fork()->creates children-> parent waits-> child executes-> parent execute */
+void execute_cd(vector<string>& args){
 
+    string directory = args[1];
+
+    if(directory.empty()){
+        directory = getenv("HOME");
+        if (directory.empty()){
+            cerr << "cd: HOME is not set\n";
+            return;
+        }
+    }
+
+    if (chdir(directory.c_str()) != 0){
+    perror("cd");
+    }
+}
+
+void execute_command(vector<string>& args){
+    
     if (args.empty()){
         return;
     }
@@ -99,7 +116,11 @@ void shell_loop(void){
             running = 0;
         }
         else{
-            execute_command(args);
+            if (args[0] == "cd"){
+                execute_cd(args);
+            }else{
+                execute_command(args);
+            }
         }
     }
 }
